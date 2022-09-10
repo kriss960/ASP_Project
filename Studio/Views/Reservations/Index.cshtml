@@ -1,0 +1,163 @@
+﻿<br />
+<div class="container">
+    <h2>Reservations</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#today">For Today</a></li>
+        <li><a data-toggle="tab" href="#future">Future</a></li>
+        <li><a data-toggle="tab" href="#past">Past</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="today" class="tab-pane fade in active">
+            <table class="table table-hover border">
+            @{
+                if (Model != null)
+                {
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Service</th>
+                            <th scope="col">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Reservation Data in Model)
+                        {
+                            if (Data.Date.Date == DateTime.Now.Date)
+                            {
+                            <tr>
+                                <th scope="row">@Data.Name</th>
+                                <td>@Data.Date.ToShortTimeString()</td>
+                                <td>@Data.Service</td>
+                                <td>@Data.Phone</td>
+                                <td>
+                                    <a class='btn btn-danger text-white' style='cursor:pointer; width:70px;'
+                                       onclick="Delete('/Reservations/Delete?id='+ @Data.Id)">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            }
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <tr>
+                        <td>No data</td>
+                    </tr>
+                }
+            }
+            </table>
+        </div>
+        <div id="future" class="tab-pane fade">
+            <table class="table table-hover border">
+                @{
+                    if (Model != null)
+                    {
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Service</th>
+                                <th scope="col">Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Reservation Data in Model)
+                            {
+                                if (Data.Date.Date > DateTime.Now.Date)
+                                {
+                                    <tr>
+                                        <th scope="row">@Data.Name</th>
+                                        <td>@Data.Date.ToLongDateString()</td>
+                                        <td>@Data.Date.ToShortTimeString()</td>
+                                        <td>@Data.Service</td>
+                                        <td>@Data.Phone</td>
+                                        <td>
+                                            <a class='btn btn-danger text-white' style='cursor:pointer; width:70px;'
+                                               onclick="Delete('/Reservations/Delete?id='+ @Data.Id)">
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>No data</td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+        <div id="past" class="tab-pane fade">
+            <table class="table table-hover border">
+                @{
+                    if (Model != null)
+                    {
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Service</th>
+                                <th scope="col">Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Reservation Data in Model)
+                            {
+                                if (Data.Date.Date < DateTime.Now.Date)
+                                {
+                                    <tr>
+                                        <th scope="row">@Data.Name</th>
+                                        <td>@Data.Date.ToLongDateString()</td>
+                                        <td>@Data.Date.ToShortTimeString()</td>
+                                        <td>@Data.Service</td>
+                                        <td>@Data.Phone</td>
+                                        <td>
+                                            <a class='btn btn-danger text-white' style='cursor:pointer; width:70px;'
+                                               onclick="Delete('/Reservations/Delete?id='+ @Data.Id)">
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>No data</td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+
+<script>
+    function Delete(url) {
+        if (confirm("Are you sure you what to delete?")) {
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    }
+
+   
+</script>
